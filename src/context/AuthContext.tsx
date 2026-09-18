@@ -25,10 +25,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const u = data.data
       setUser(u)
       saveUser(u)
-      // For hospital_staff users, UserSerializer embeds the staff profile
-      // as `profile` — no second request needed.
+      // For hospital_staff, UserSerializer embeds HospitalStaffProfileSerializer as `profile`
       if (u.user_type === 'hospital_staff' && u.profile) {
         setStaffProfile(u.profile as unknown as StaffProfile)
+      } else {
+        setStaffProfile(null)
       }
     } catch {
       // silently ignore — token might just be missing

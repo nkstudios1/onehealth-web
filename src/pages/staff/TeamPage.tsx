@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import type { FormEvent } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { api, extractError } from '../../lib/api'
@@ -29,7 +30,7 @@ export default function TeamPage() {
     enabled: !!hospitalId,
   })
 
-  async function handleAdd(e: React.FormEvent) {
+  async function handleAdd(e: FormEvent) {
     e.preventDefault()
     setSaving(true)
     try {

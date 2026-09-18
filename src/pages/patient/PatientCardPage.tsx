@@ -68,12 +68,14 @@ export default function PatientCardPage() {
             </svg>
           </div>
           <p className="text-sm font-medium text-gray-900">
-            {expired ? 'Your card has expired' : 'You don\'t have an active card'}
+            {expired ? 'Your card has expired' : 'You don\'t have an active card yet'}
           </p>
-          <p className="text-xs text-gray-500 mt-1 mb-5">
-            Issue a new card so hospitals can identify you
+          <p className="text-sm text-gray-500 mt-2 mb-5 max-w-sm mx-auto">
+            Your OneHealth card is how hospitals identify you when you arrive. It works like a medical ID —
+            hospitals scan the reference number to find you and request access to your records.
+            No card means no fast lookup.
           </p>
-          <button className="btn-primary" onClick={issueCard}>Issue patient card</button>
+          <button className="btn-primary" onClick={issueCard}>Issue my patient card</button>
         </div>
       ) : (
         <div className="relative rounded-2xl bg-gradient-to-br from-primary-700 to-primary-900 p-6 text-white shadow-xl">

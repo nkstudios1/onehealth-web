@@ -17,7 +17,7 @@ export default function StaffDashboard() {
   })
 
   const { data: visits, isLoading: visitsLoading } = useQuery({
-    queryKey: ['my-visits-staff'],
+    queryKey: ['staff-visits'],
     queryFn: async () => {
       const { data } = await api.get<{ data: Visit[] }>('/visits/')
       return data.data ?? []

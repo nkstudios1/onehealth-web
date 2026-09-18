@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import type { FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { api, extractError } from '../../lib/api'
@@ -22,7 +23,7 @@ export default function RegisterPatientPage() {
   const [gender, setGender]       = useState('')
   const [bloodType, setBloodType] = useState('')
 
-  function handleStep1(e: React.FormEvent) {
+  function handleStep1(e: FormEvent) {
     e.preventDefault()
     if (password.length < 8) {
       toast.error('Password must be at least 8 characters')
@@ -32,7 +33,7 @@ export default function RegisterPatientPage() {
     window.scrollTo(0, 0)
   }
 
-  async function handleStep2(e: React.FormEvent) {
+  async function handleStep2(e: FormEvent) {
     e.preventDefault()
     setLoading(true)
     try {

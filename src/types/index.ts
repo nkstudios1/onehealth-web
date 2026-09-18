@@ -85,11 +85,13 @@ export interface MedicalRecord {
 export interface Visit {
   id: string
   patient: string
+  patient_name?: string
   hospital: string
   hospital_name?: string
   status: 'active' | 'checked_out'
   admitted_at: string
   checked_out_at: string | null
+  checkout_requested_by_patient_at: string | null
   created_by_staff: string | null
 }
 
@@ -99,24 +101,28 @@ export interface Vital {
   blood_pressure_systolic: number | null
   blood_pressure_diastolic: number | null
   heart_rate: number | null
-  temperature: number | null
+  temperature_c: number | null
+  respiratory_rate: number | null
   oxygen_saturation: number | null
   weight_kg: number | null
   height_cm: number | null
+  notes: string
   recorded_at: string
+  recorded_by_staff: string | null
 }
 
 export interface Medication {
   id: string
   patient: string
   visit: string | null
-  name: string
-  dosage: string
+  medication: string
+  dose: string
+  route: string
   frequency: string
-  start_date: string
-  end_date: string | null
+  duration: string
+  reason: string
+  status: 'current' | 'previous'
   prescribed_by_staff: string | null
-  notes: string
   created_at: string
 }
 
@@ -140,10 +146,11 @@ export interface AccessRequest {
   hospital: string
   hospital_name?: string
   requested_by_staff: string
+  requested_by_staff_name?: string
   request_type: 'normal' | 'emergency'
   access_level: 'critical_info_only' | 'full_record'
   status: 'pending' | 'approved' | 'denied' | 'expired'
-  code: string
+  approval_code: string
   created_at: string
   responded_at: string | null
   patient_response_deadline: string | null

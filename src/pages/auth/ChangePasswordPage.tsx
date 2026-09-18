@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import type { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { api, extractError } from '../../lib/api'
@@ -11,7 +12,7 @@ export default function ChangePasswordPage() {
   const [loading, setLoading] = useState(false)
   const [form, setForm] = useState({ old_password: '', new_password: '', confirm: '' })
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     if (form.new_password !== form.confirm) {
       toast.error('Passwords do not match')
