@@ -6,7 +6,7 @@ import { PageSpinner } from '../../components/Spinner'
 import type { AccessGrant, Visit } from '../../types'
 
 export default function StaffDashboard() {
-  const { staffProfile } = useAuth()
+  const { staffProfile, user } = useAuth()
 
   const { data: grants, isLoading: grantsLoading } = useQuery({
     queryKey: ['hospital-active-grants'],
