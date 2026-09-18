@@ -28,33 +28,59 @@ export default function RegisterPatientPage() {
     }
     
     setLoading(true)
+    
+    const registrationData = {
+      email: email.trim().toLowerCase(),
+      password,
+      phone_number: phone.trim(),
+      full_name: fullName.trim(),
+      date_of_birth: dateOfBirth,
+      gender: '',
+      blood_type: '',
+    }
+
+    console.log('Attempting registration...', { email: registrationData.email, phone: registrationData.phone_number })
+    
     try {
-      // Register with minimal required profile data
-      await api.post('/auth/register/patient/', {
-        email: email.trim().toLowerCase(),
-        password,
-        phone_number: phone.trim(),
-        full_name: fullName.trim(),
-        date_of_birth: dateOfBirth,
-        gender: '', // Optional - can be filled later
-        blood_type: '', // Optional - can be filled later
-      })
+      // Step 1: Register
+      const registerResponse = await api.post('/auth/register/patient/', registrationData)
+      console.log('Registration response:', registerResponse.data)
 
-      // Auto-login after registration
-      const loginResponse = await api.post('/auth/login/', {
-        identifier: email.trim().toLowerCase(),
-        password,
-      })
+      toast.success('Account created! Logging you in...')
 
-      const { user, tokens } = loginResponse.data.data
-      saveTokens(tokens.access, tokens.refresh)
-      saveUser(user)
-      await refreshMe()
+      // Step 2: Auto-login
+      try {
+        console.log('Attempting auto-login...')
+        const loginResponse = await api.post('/auth/login/', {
+          identifier: registrationData.email,
+          password: registrationData.password,
+        })
+        console.log('Login response:', loginResponse.data)
 
-      toast.success('Welcome to OneHealth! 🎉')
-      navigate('/patient')
+        const { user, tokens } = loginResponse.data.data
+        saveTokens(tokens.access, tokens.refresh)
+        saveUser(user)
+        await refreshMe()
+
+        toast.success('Welcome to OneHealth! 🎉')
+        navigate('/patient')
+      } catch (loginErr) {
+        // Registration succeeded but auto-login failed
+        console.error('Auto-login failed:', loginErr)
+        toast.success('Account created! Please sign in.')
+        navigate('/login')
+      }
     } catch (err) {
-      toast.error(extractError(err))
+      // Registration failed
+      const errorMsg = extractError(err)
+      console.error('Registration error:', err)
+      
+      // Check if it's a network/CORS error
+      if (err instanceof Error && err.message.includes('Network Error')) {
+        toast.error('Cannot connect to server. Please check your internet connection.')
+      } else {
+        toast.error(errorMsg)
+      }
     } finally {
       setLoading(false)
     }
